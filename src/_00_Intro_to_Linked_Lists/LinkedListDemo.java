@@ -2,7 +2,8 @@ package _00_Intro_to_Linked_Lists;
 
 public class LinkedListDemo {
 
-    public static void main(String[] args) {
+    @SuppressWarnings("unchecked")
+	public static void main(String[] args) {
 
         /*
          * A LinkedList is a linear data structure, but unlike an ArrayList or
@@ -32,6 +33,25 @@ public class LinkedListDemo {
          * 
          */
 
+    	LinkedList<Integer> list = new LinkedList<Integer>();
+    	list.add(1);
+    	list.add(2);
+    	list.add(3);
+    	list.add(4);
+    	list.add(5);
+    	
+    	list.add(10);
+    	list.remove(5);
+    	
+    	list.print();
+    	
+    	Node<Integer> head = list.getHead();
+    	    	
+    	for (int i = 0; i < list.size(); i++) {
+    		head.setValue(head.getValue() + 1);
+    		head = head.getNext();
+    		list.print();
+    	}
     }
 
 }
