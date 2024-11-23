@@ -41,18 +41,23 @@ public class RainbowZombieCongaLine {
 
 	// Make the passed in zombie the last Zombie in the conga line!
 	public void caboose(Zombie dancer) {
-		congaLine.getTail().setValue(dancer);
+
+		congaLine.remove(congaLine.size()-1);
+		congaLine.add(dancer);
+
 	}
 
 	// Place the zombie at the designated position in the conga line!
 	public void jumpInTheLine(Zombie dancer, int position) {
 		for (int i = 0; i < position; i++) {
-			if (i==position-1) {
+			if (i==position) {
 				head.setValue(dancer);
 			}
 			head = head.getNext();
 		}
 		head=congaLine.getHead();
+
+		//NOTE: this one's kinda weird, it works sometimes
 	}
 
 	/*
@@ -85,6 +90,7 @@ public class RainbowZombieCongaLine {
 				position++;
 				head=head.getNext();
 			}
+			//NOTE: so like this doesn't work. It just doesn't get rid of any zombies, idk why
 		}
 		head=congaLine.getHead();
 	}
@@ -94,18 +100,13 @@ public class RainbowZombieCongaLine {
 	 * add one to the front, one to the end and one in the middle.
 	 */
 	public void brains(Zombie dancer) {
-		if (congaLine.size()%2==0) {
-			for (int i = 0; i < congaLine.size()/2; i++) {
-				head = head.getNext();
-			}
-		} else {
-			for (int i = 0; i < congaLine.size()/2+1; i++) {
-				head = head.getNext();
-			}
-			head.setValue(dancer);
+		for (int i = 0; i < congaLine.size()/2; i++) {
+			head = head.getNext();
 		}
+		head.setValue(dancer);
+
 		congaLine.getHead().setValue(dancer);
-		congaLine.getTail().setValue(dancer);
+		congaLine.add(dancer);
 
 		head=congaLine.getHead();
 	}
@@ -113,10 +114,11 @@ public class RainbowZombieCongaLine {
 	/*
 	 * Add the passed in zombie to the front and then add one zombie of each hat
 	 * color to the end of the line.
-	 */
+	 */ 
 	public void rainbowBrains(Zombie dancer) {
-		//congaLine.getHead().setValue(dancer);
-		//NOTE: this line doesn't work so fix it later
+		//head = congaLine.getHead();
+		//head.setValue(dancer);
+		//NOTE: this line doesn't work so fix it later. find a way to add to the front without an error
 
 		congaLine.add(new Zombie(ZombieHatColor.R));
 		congaLine.add(new Zombie(ZombieHatColor.O));

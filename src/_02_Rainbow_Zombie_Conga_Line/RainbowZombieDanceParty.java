@@ -88,7 +88,7 @@ public class RainbowZombieDanceParty {
                 break;
 
             case RAINBOW_BRAINS:
-                danceParty.rainbowBrains(dancer);
+                danceParty.rainbowBrains( dancer);
                 break;
             }
 
