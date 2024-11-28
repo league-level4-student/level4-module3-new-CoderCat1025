@@ -23,21 +23,30 @@ public class RainbowZombieCongaLine {
 
 	private LinkedList<Zombie> congaLine;
 	private ZombieHatColor[] zombieHats;
-	Node<Zombie> head;
+	Node<Zombie> node;
 
 	public RainbowZombieCongaLine() {
 
 		congaLine = new LinkedList<Zombie>();
 		zombieHats = ZombieHatColor.values();
 
-		head = congaLine.getHead();
 
 	}
+	
 
 	// Make the passed in zombie the first Zombie in the conga line!
 	public void engine(Zombie dancer) {
-		congaLine.getHead().setValue(dancer);
-	}
+		if (congaLine.getHead()==null) {
+		
+			congaLine.setHead(new Node<Zombie>(dancer));
+		} else {
+			Node<Zombie> newHead = new Node<Zombie>(dancer);
+			Node<Zombie> old = congaLine.getHead();
+			old.setPrev(newHead);
+			newHead.setNext(old);
+			congaLine.setHead(newHead);
+		}
+		}
 
 	// Make the passed in zombie the last Zombie in the conga line!
 	public void caboose(Zombie dancer) {
@@ -49,15 +58,13 @@ public class RainbowZombieCongaLine {
 
 	// Place the zombie at the designated position in the conga line!
 	public void jumpInTheLine(Zombie dancer, int position) {
-		for (int i = 0; i < position; i++) {
+		for (int i = 0; i < position+1; i++) {
 			if (i==position) {
-				head.setValue(dancer);
+				node.setValue(dancer);
 			}
-			head = head.getNext();
+			node = node.getNext();
 		}
-		head=congaLine.getHead();
-
-		//NOTE: this one's kinda weird, it works sometimes
+		node=congaLine.getHead();
 	}
 
 	/*
@@ -65,14 +72,15 @@ public class RainbowZombieCongaLine {
 	 * the conga line!
 	 */
 	public void everyoneOut(Zombie dancer) {
+		node=congaLine.getHead();
 		for (int i = 0; i < congaLine.size(); i++) {
-			if (head.getValue().getZombieHatColor() == dancer.getZombieHatColor()) {
+			if (node.getValue().getZombieHatColor() == dancer.getZombieHatColor()) {
 				congaLine.remove(i);
 				i--;
 			}
-			head = head.getNext();
+			node = node.getNext();
 		}
-		head=congaLine.getHead();
+		node=congaLine.getHead();
 	}
 
 	/*
@@ -83,16 +91,16 @@ public class RainbowZombieCongaLine {
 		boolean found = false;
 		int position = 0;
 		while (found=false) {
-			if (head.getValue().getZombieHatColor()==dancer.getZombieHatColor()) {
+			if (node.getValue().getZombieHatColor()==dancer.getZombieHatColor()) {
 				congaLine.remove(position);
 				found=true;
 			} else {
 				position++;
-				head=head.getNext();
+				node=node.getNext();
 			}
 			//NOTE: so like this doesn't work. It just doesn't get rid of any zombies, idk why
 		}
-		head=congaLine.getHead();
+		node=congaLine.getHead();
 	}
 
 	/*
@@ -101,14 +109,14 @@ public class RainbowZombieCongaLine {
 	 */
 	public void brains(Zombie dancer) {
 		for (int i = 0; i < congaLine.size()/2; i++) {
-			head = head.getNext();
+			node = node.getNext();
 		}
-		head.setValue(dancer);
+		node.setValue(dancer);
 
 		congaLine.getHead().setValue(dancer);
 		congaLine.add(dancer);
 
-		head=congaLine.getHead();
+		node=congaLine.getHead();
 	}
 
 	/*
@@ -116,10 +124,9 @@ public class RainbowZombieCongaLine {
 	 * color to the end of the line.
 	 */ 
 	public void rainbowBrains(Zombie dancer) {
-		//head = congaLine.getHead();
-		//head.setValue(dancer);
-		//NOTE: this line doesn't work so fix it later. find a way to add to the front without an error
-
+		
+		engine(dancer);
+		
 		congaLine.add(new Zombie(ZombieHatColor.R));
 		congaLine.add(new Zombie(ZombieHatColor.O));
 		congaLine.add(new Zombie(ZombieHatColor.Y));
@@ -127,8 +134,8 @@ public class RainbowZombieCongaLine {
 		congaLine.add(new Zombie(ZombieHatColor.B));
 		congaLine.add(new Zombie(ZombieHatColor.I));
 		congaLine.add(new Zombie(ZombieHatColor.V));
-
-		head = congaLine.getHead();
+		
+		node=congaLine.getHead();
 	}
 
 	public LinkedList<Zombie> getCongaLine() {
