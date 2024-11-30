@@ -30,14 +30,12 @@ public class RainbowZombieCongaLine {
 		congaLine = new LinkedList<Zombie>();
 		zombieHats = ZombieHatColor.values();
 
-
 	}
-	
 
 	// Make the passed in zombie the first Zombie in the conga line!
 	public void engine(Zombie dancer) {
 		if (congaLine.getHead()==null) {
-		
+
 			congaLine.setHead(new Node<Zombie>(dancer));
 		} else {
 			Node<Zombie> newHead = new Node<Zombie>(dancer);
@@ -46,12 +44,11 @@ public class RainbowZombieCongaLine {
 			newHead.setNext(old);
 			congaLine.setHead(newHead);
 		}
-		}
+	}
 
 	// Make the passed in zombie the last Zombie in the conga line!
 	public void caboose(Zombie dancer) {
 
-		congaLine.remove(congaLine.size()-1);
 		congaLine.add(dancer);
 
 	}
@@ -60,10 +57,20 @@ public class RainbowZombieCongaLine {
 	public void jumpInTheLine(Zombie dancer, int position) {
 		for (int i = 0; i < position+1; i++) {
 			if (i==position) {
-				node.setValue(dancer);
+				if (position>0) {
+					Node<Zombie> newNode = new Node<Zombie>(dancer);
+					newNode.setPrev(node.getPrev());
+					node.getPrev().setNext(newNode);
+					newNode.setNext(node);
+					node.setPrev(newNode);	
+				} else {
+					engine(dancer);
+				}
 			}
-			node = node.getNext();
+
+			node=node.getNext();
 		}
+
 		node=congaLine.getHead();
 	}
 
@@ -89,17 +96,18 @@ public class RainbowZombieCongaLine {
 	 */
 	public void youAreDone(Zombie dancer) {
 		boolean found = false;
-		int position = 0;
-		while (found=false) {
-			if (node.getValue().getZombieHatColor()==dancer.getZombieHatColor()) {
-				congaLine.remove(position);
-				found=true;
-			} else {
-				position++;
-				node=node.getNext();
+		node=congaLine.getHead();
+		for (int i = 0; i < congaLine.size(); i++) {
+			if (node.getValue().getZombieHatColor() == dancer.getZombieHatColor()) {
+				if (found=false) {
+					congaLine.remove(i);
+					i--;
+					found=true;
+				}
 			}
-			//NOTE: so like this doesn't work. It just doesn't get rid of any zombies, idk why
+			node = node.getNext();
 		}
+		//NOTE: this doesn't get rid of any zombies for some reason
 		node=congaLine.getHead();
 	}
 
@@ -113,8 +121,14 @@ public class RainbowZombieCongaLine {
 		}
 		node.setValue(dancer);
 
-		congaLine.getHead().setValue(dancer);
-		congaLine.add(dancer);
+		Node<Zombie> newNode = new Node<Zombie>(dancer);
+		newNode.setPrev(node.getPrev());
+		node.getPrev().setNext(newNode);
+		newNode.setNext(node);
+		node.setPrev(newNode);
+
+		engine(dancer);
+		caboose(dancer);
 
 		node=congaLine.getHead();
 	}
@@ -124,9 +138,9 @@ public class RainbowZombieCongaLine {
 	 * color to the end of the line.
 	 */ 
 	public void rainbowBrains(Zombie dancer) {
-		
+
 		engine(dancer);
-		
+
 		congaLine.add(new Zombie(ZombieHatColor.R));
 		congaLine.add(new Zombie(ZombieHatColor.O));
 		congaLine.add(new Zombie(ZombieHatColor.Y));
@@ -134,7 +148,7 @@ public class RainbowZombieCongaLine {
 		congaLine.add(new Zombie(ZombieHatColor.B));
 		congaLine.add(new Zombie(ZombieHatColor.I));
 		congaLine.add(new Zombie(ZombieHatColor.V));
-		
+
 		node=congaLine.getHead();
 	}
 
