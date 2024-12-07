@@ -58,11 +58,15 @@ public class RainbowZombieCongaLine {
 		for (int i = 0; i < position+1; i++) {
 			if (i==position) {
 				if (position>0) {
-					Node<Zombie> newNode = new Node<Zombie>(dancer);
-					newNode.setPrev(node.getPrev());
-					node.getPrev().setNext(newNode);
-					newNode.setNext(node);
-					node.setPrev(newNode);	
+					if (position==congaLine.size()-1) {
+						caboose(dancer);
+					} else {
+						Node<Zombie> newNode = new Node<Zombie>(dancer);
+						newNode.setPrev(node.getPrev());
+						node.getPrev().setNext(newNode);
+						newNode.setNext(node);
+						node.setPrev(newNode);	
+					}
 				} else {
 					engine(dancer);
 				}
@@ -105,9 +109,14 @@ public class RainbowZombieCongaLine {
 					found=true;
 				}
 			}
+			System.out.println(found);
+			System.out.println(node.getValue().getZombieHatColor());
+			System.out.println(dancer.getZombieHatColor());
+			
 			node = node.getNext();
 		}
-		//NOTE: this doesn't get rid of any zombies for some reason
+		//NOTE: this stupid fucking method doesn't detect two same colored hats for some reason :skull:
+		//NOTE: WHY DOESNT IT WORK
 		node=congaLine.getHead();
 	}
 
