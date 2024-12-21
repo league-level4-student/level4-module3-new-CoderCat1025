@@ -1,6 +1,9 @@
 package _04_Morse_Code;
 
+import java.util.Scanner;
+
 import _03_Intro_to_Binary_Trees.BinaryTree;
+import _03_Intro_to_Binary_Trees.Node;
 
 public class MorseDecoder {
 
@@ -67,9 +70,35 @@ public class MorseDecoder {
 	 */
 	void decode() {
 		String morseCode = "-.-- --- ..- .- .-. . .- -- .- --.. .. -. --.";
+		Scanner scan = new Scanner(System.in);
 		// Y O U A R E A M A Z I N G
+		//System.out.println("You are amazing");
 
+		//NOTE: i also added "x" to show a new letter and "xx" to show a space (like in codebusters) but it still works without them
+		//NOTE: this doesn't work with both space and x's, you can only use one or the other
+		System.out.println("Type in the morse code you want to translate.");
+		morseCode = scan.nextLine();
 
+		Node letter = mcTree.getRoot();
+		String plainText = "";
+
+		for (int i = 0; i < morseCode.length(); i++) {
+			if (morseCode.charAt(i) == '-') {
+				letter = letter.getRight();
+			} else if (morseCode.charAt(i) == '.') {
+				letter = letter.getLeft();
+
+			} else if (morseCode.charAt(i) == 'x' && morseCode.charAt(i-1) == 'x') {
+				plainText = plainText + " ";
+				letter = mcTree.getRoot();
+			} else {
+				plainText = plainText + letter.getValue();
+				letter = mcTree.getRoot();
+			}
+		}
+		plainText = plainText + letter.getValue();
+
+		System.out.println(plainText);
 	}
 
 }
