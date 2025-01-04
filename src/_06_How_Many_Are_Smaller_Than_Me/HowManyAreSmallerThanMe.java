@@ -15,9 +15,25 @@ public class HowManyAreSmallerThanMe {
 	 */
 
 	public int howManyAreSmallerThanMe(AVLTree<Integer> avlTree, int me) {
-		//just find how many are to the left???? idk how to deal with multiple paths though. so figure that out later
-		avlTree.printVertical();
 		int howMany = 0;
+
+		AVLNode<Integer> num;
+		num = avlTree.search(me);
+
+		if (avlTree.getRoot().getValue() < me) {
+			int i = 1;
+			while (avlTree.getRoot().getValue() != me) {
+				avlTree.insert(me + i);
+				i++;
+			}
+		}
+
+		while (num.getLeft() != null) {
+			avlTree.delete(num.getLeft().getValue());
+			howMany++;
+		}
+
+		//:agony:
 
 		return howMany;
 	}
