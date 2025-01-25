@@ -55,24 +55,31 @@ public class RainbowZombieCongaLine {
 
 	// Place the zombie at the designated position in the conga line!
 	public void jumpInTheLine(Zombie dancer, int position) {
-		for (int i = 0; i < position+1; i++) {
-			if (i==position) {
-				if (position>0) {
-					if (position==congaLine.size()-1) {
-						caboose(dancer);
+		if (position==1) {
+			engine(dancer);
+		} else {
+
+			for (int i = 0; i < position+1; i++) {
+				if (i==position) {
+					if (position>0) {
+						if (position==congaLine.size()-1) {
+							caboose(dancer);
+						} else {
+							Node<Zombie> newNode = new Node<Zombie>(dancer);
+							newNode.setPrev(node.getPrev());
+							node.getPrev().setNext(newNode);
+							newNode.setNext(node);
+							node.setPrev(newNode);	
+						}
 					} else {
-						Node<Zombie> newNode = new Node<Zombie>(dancer);
-						newNode.setPrev(node.getPrev());
-						node.getPrev().setNext(newNode);
-						newNode.setNext(node);
-						node.setPrev(newNode);	
+						engine(dancer);
 					}
-				} else {
-					engine(dancer);
+				}
+
+				if (node.getNext()!=null) {
+					node=node.getNext();
 				}
 			}
-
-			node=node.getNext();
 		}
 
 		node=congaLine.getHead();
@@ -109,10 +116,7 @@ public class RainbowZombieCongaLine {
 					found=true;
 				}
 			}
-			System.out.println(found);
-			System.out.println(node.getValue().getZombieHatColor());
-			System.out.println(dancer.getZombieHatColor());
-			
+
 			node = node.getNext();
 		}
 		//NOTE: this stupid fucking method doesn't detect two same colored hats for some reason :skull:

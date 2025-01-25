@@ -18,19 +18,12 @@ public class HowManyAreSmallerThanMe {
 		int howMany = 0;
 
 		AVLNode<Integer> num;
-		num = avlTree.search(me);
+		num = avlTree.getRoot();
 
-		if (avlTree.getRoot().getValue() < me) {
-			int i = 1;
-			while (avlTree.getRoot().getValue() != me) {
-				avlTree.insert(me + i);
-				i++;
+		for (int i=1; i<me; i++) {
+			if (avlTree.search(i)!=null&&avlTree.search(i).getValue()==i) {
+				howMany++;
 			}
-		}
-
-		while (num.getLeft() != null) {
-			avlTree.delete(num.getLeft().getValue());
-			howMany++;
 		}
 
 		//:agony:
