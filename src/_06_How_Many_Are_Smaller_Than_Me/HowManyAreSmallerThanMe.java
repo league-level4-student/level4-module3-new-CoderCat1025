@@ -26,8 +26,6 @@ public class HowManyAreSmallerThanMe {
 			}
 		}
 
-		//:agony:
-
 		return howMany;
 	}
 }
